@@ -89,10 +89,11 @@ export async function authRoutes(app: FastifyInstance) {
     const { refresh_token } = (req.body as any) ?? {}
     if (!refresh_token) return reply.status(400).send({ success: false, error: 'refresh_token required' })
     try {
-      const payload = verifyRefreshToken(refresh_token)
-      const stored = await app.redis.get(`refresh:${payload.userId}`)
+      const decoded = verifyRefreshToken(refresh_token)
+      const stored = await app.redis.get(`refresh:${decoded.userId}`)
       if (!stored || stored !== refresh_token) return reply.status(401).send({ success: false, error: 'Token revoked' })
-      return reply.send({ success: true, data: { access_token: signAccessToken(payload) } })
+      const { userId, phone, role } = decoded
+      return reply.send({ success: true, data: { access_token: signAccessToken({ userId, phone, role }) } })
     } catch {
       return reply.status(401).send({ success: false, error: 'Invalid refresh token' })
     }
