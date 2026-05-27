@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BharatTruck — Google Sign In Test</title>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; }
+    pre { background: #f4f4f4; padding: 16px; border-radius: 8px; overflow-x: auto; white-space: pre-wrap; }
+    .success { color: #16a34a; } .error { color: #dc2626; }
+    h1 { font-size: 1.4em; }
+    #result { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>BharatTruck — Google Sign In Test</h1>
+  <p>Click the button below to sign in with Google and test the <code>/auth/google</code> endpoint.</p>
+
+  <div id="g_id_onload"
+    data-client_id="752385541585-hg3qa9jgmvufie9osn5qu6eptvh1dc4n.apps.googleusercontent.com"
+    data-callback="handleCredentialResponse"
+    data-auto_prompt="false">
+  </div>
+  <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"></div>
+
+  <div id="result"></div>
+
+  <script>
+    async function handleCredentialResponse(response) {
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = '<p>Sending id_token to server...</p>';
+
+      try {
+        const res = await fetch('http://localhost:3001/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id_token: response.credential, role: 'shipper' }),
+        });
+        const data = await res.json();
+        const cls = data.success ? 'success' : 'error';
+        resultDiv.innerHTML = `
+          <p class="${cls}"><strong>${data.success ? 'SUCCESS' : 'FAILED'}</strong> (HTTP ${res.status})</p>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+      } catch (err) {
+        resultDiv.innerHTML = `<p class="error"><strong>Network error:</strong> ${err.message}</p>`;
+      }
+    }
+  </script>
+</body>
+</html>
