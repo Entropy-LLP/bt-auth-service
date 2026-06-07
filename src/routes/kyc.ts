@@ -1,6 +1,6 @@
 // Fastify route plugin exposing all KYC HTTP endpoints — validates request schemas and delegates to individual verification modules
 
-import type { FastifyInstance, FastifyRequest } from 'fastify'
+import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import fp from 'fastify-plugin'
 import { authenticate } from '../lib/authenticate.js'
 import { getCurrentLevel, getKYCRecord } from '../modules/kyc/repository.js'
