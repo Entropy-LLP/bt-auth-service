@@ -36,9 +36,9 @@ services:
         value: "false"
       - key: OTP_DEV_MODE
         value: "false"
-      - key: MAGIC_LINK_BASE_URL
+      - key: SHIPPER_MAGIC_LINK_URL
         sync: false
-      - key: MAGIC_LINK_REDIRECT_URL
+      - key: DRIVER_MAGIC_LINK_URL
         sync: false
       - key: TWILIO_ACCOUNT_SID
         sync: false
