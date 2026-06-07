@@ -1,8 +1,8 @@
 // Fastify route plugin exposing all KYC HTTP endpoints — validates request schemas and delegates to individual verification modules
 
-import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import type { FastifyInstance, FastifyRequest } from 'fastify'
 import fp from 'fastify-plugin'
-import { verifyAccessToken } from '../lib/jwt.js'
+import { authenticate } from '../lib/authenticate.js'
 import { getCurrentLevel, getKYCRecord } from '../modules/kyc/repository.js'
 import { KYCStatus, KYCLevel, UserRole, type KYCRequest, type KYCResult } from '../modules/kyc/types.js'
 
@@ -64,18 +64,6 @@ const statusParamsSchema = {
     userId: { type: 'string' },
   },
 } as const
-
-// ---------------------------------------------------------------------------
-// Auth pre-handler
-// ---------------------------------------------------------------------------
-
-async function authenticate(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-  // TODO: extract Bearer token from Authorization header
-  // TODO: call verifyAccessToken(token) — on JwtError reply 401
-  // TODO: attach decoded payload to request (extend FastifyRequest via declaration merge)
-  void verifyAccessToken
-  reply.code(401).send({ error: 'authenticate: not implemented' })
-}
 
 // ---------------------------------------------------------------------------
 // Route handlers

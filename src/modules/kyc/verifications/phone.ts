@@ -1,6 +1,5 @@
 // Wraps otp.ts OTP send/verify flow and maps the result to a KYCResult for phone number ownership verification
 
-import { generateOtp, sendOtp } from '../../../lib/otp.js'
 import { KYCLevel, KYCStatus, type KYCRequest, type KYCResult } from '../types.js'
 
 /**
@@ -18,9 +17,6 @@ import { KYCLevel, KYCStatus, type KYCRequest, type KYCResult } from '../types.j
  *               delete Redis key on success to prevent replay
  */
 export async function verifyPhone(request: KYCRequest): Promise<KYCResult> {
-  void generateOtp
-  void sendOtp
-
   const { user_id, metadata } = request
   void user_id
   void metadata

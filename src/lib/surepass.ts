@@ -25,8 +25,8 @@ export class SurepassClient {
 
   constructor() {
     const key = process.env.SUREPASS_API_KEY
-    if (!key) throw new Error('SUREPASS_API_KEY env var is not set')
-    this.apiKey = key
+    if (!key) console.warn('[surepass] SUREPASS_API_KEY not set — KYC verification calls will fail at runtime')
+    this.apiKey = key ?? ''
   }
 
   /**

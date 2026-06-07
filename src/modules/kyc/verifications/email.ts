@@ -1,6 +1,5 @@
 // Email OTP or magic-link verification flow, returns KYCResult confirming email ownership
 
-import { generateOtp } from '../../../lib/otp.js'
 import { KYCLevel, KYCStatus, type KYCRequest, type KYCResult } from '../types.js'
 
 /**
@@ -17,8 +16,6 @@ import { KYCLevel, KYCStatus, type KYCRequest, type KYCResult } from '../types.j
  * TODO: consider magic-link alternative (JWT signed link with 15 min expiry) as a future option
  */
 export async function verifyEmail(request: KYCRequest): Promise<KYCResult> {
-  void generateOtp
-
   const { user_id, metadata } = request
   void user_id
   void metadata
